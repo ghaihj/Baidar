@@ -1,11 +1,11 @@
 import 'package:baider_app/bloc/auth/signup/signupstate.dart';
-import 'package:baider_app/data/datasource/remote/auth/signup.dart';
+import 'package:baider_app/data/datasource/remote/auth/signup_data.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Signupcubit extends Cubit<Signupstate> {
+class SignupCubit extends Cubit<Signupstate> {
   final SignUpData signUpData;
-  Signupcubit(this.signUpData) : super(Signupinitail());
+  SignupCubit(this.signUpData) : super(Signupinitail());
 
   Future<void> signup(
     String email,
