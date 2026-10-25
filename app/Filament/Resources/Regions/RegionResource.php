@@ -50,6 +50,7 @@ class RegionResource extends Resource
             ->columns([
                 TextColumn::make('id')->label('#'),
                 TextColumn::make('name_ar')->label('المنطقة')->searchable(),
+                TextColumn::make('name_en')->label('المنطقة بالانكليزي')->searchable(),
                 TextColumn::make('climate_zone')->label('المناخ'),
                 TextColumn::make('created_at')->label('أضيفت')->dateTime('Y-m-d'),
             ])
