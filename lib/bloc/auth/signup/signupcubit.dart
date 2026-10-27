@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SignupCubit extends Cubit<Signupstate> {
   final SignUpData signUpData;
+  bool isshowpasswoed = true;
   SignupCubit(this.signUpData) : super(Signupinitail());
 
   Future<void> signup(
@@ -15,15 +16,20 @@ class SignupCubit extends Cubit<Signupstate> {
   ) async {
     emit(Signuploading());
     try {
-      final data = await signUpData.signup(email, password, phone, username);
+      final data = await signUpData.signup(username, email, password);
 
       if (data['status'] == 'success') {
         emit(Signupsecuess());
-      }else{
+      } else {
         emit(Signupfaliuar(data['message'] ?? 'error'));
       }
     } on DioException catch (e) {
       emit(Signupfaliuar(e.response?.data?['message'] ?? 'error'));
     }
+  }
+
+  showPassword() {
+    isshowpasswoed = isshowpasswoed == true ? false : true;
+    emit(SignupShowPassword());
   }
 }

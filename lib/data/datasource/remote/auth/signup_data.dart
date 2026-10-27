@@ -8,7 +8,6 @@ class SignUpData {
   Future<Map<String, dynamic>> signup(
     String email,
     String password,
-    String phone,
     String username,
   ) async {
     var respones = await dio.post(
@@ -17,7 +16,6 @@ class SignUpData {
         "user_email": email,
         "user_password": password,
         "user_name": username,
-        "user_phone": phone,
       },
     );
     return respones.data;

@@ -10,4 +10,5 @@ class LocaleCubit extends Cubit<Locale> {
     prefs.setString('lang', code);
     emit(Locale(code));
   }
+  
 }

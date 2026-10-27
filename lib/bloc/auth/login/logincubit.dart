@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginCubit extends Cubit<Loginstate> {
   final LoginData loginData;
   final TokenStorage tokenStorage;
+  bool isshowpasswoed = true;
   LoginCubit(this.loginData, this.tokenStorage) : super(Logininitial());
 
   Future<void> login(String email, String password) async {
@@ -22,5 +23,10 @@ class LoginCubit extends Cubit<Loginstate> {
     } on DioException catch (e) {
       emit(Loginfaliuer(e.response?.data?['message'] ?? 'error'));
     }
+  }
+
+  showPassword() {
+    isshowpasswoed = isshowpasswoed == true ? false : true;
+    emit(LoginShowPassword());
   }
 }

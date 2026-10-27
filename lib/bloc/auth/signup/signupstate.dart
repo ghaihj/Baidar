@@ -6,6 +6,8 @@ class Signuploading extends Signupstate {}
 
 class Signupsecuess extends Signupstate {}
 
+class SignupShowPassword extends Signupstate{}
+
 class Signupfaliuar extends Signupstate {
   final String massegs;
   Signupfaliuar(this.massegs);
