@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider.value(value: getIt<ThemeCubit>()),
         BlocProvider.value(value: getIt<LocaleCubit>()),
+        // BlocProvider.value(value: getIt<AuthCubit>()), 
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {

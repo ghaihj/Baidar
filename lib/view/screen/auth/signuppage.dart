@@ -1,8 +1,10 @@
+import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
 import 'package:baider_app/core/constant/app_colors.dart';
 import 'package:baider_app/core/function/validinput.dart';
 import 'package:baider_app/view/widget/auth/coustembuttomauth.dart';
 import 'package:baider_app/view/widget/auth/coustemtextformauth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class Signuppage extends StatefulWidget {
@@ -27,6 +29,15 @@ class _SignuppageState extends State<Signuppage> {
     _mypassoerdcontroller = TextEditingController();
     super.dispose();
   }
+  void _onSignupPressed() {
+  if (!_formKey.currentState!.validate()) return;
+  context.read<SignupCubit>().signup(
+        _myemailcontroller.text.trim(),
+        _mynamecontroller.text.trim(),
+        _mypassoerdcontroller.text , // كلمة السر بدون trim
+      );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +154,7 @@ class _SignuppageState extends State<Signuppage> {
                 child:
                     // BlocBuilder<SignupCubit, Signupstate>(
                     //   builder: (context, state) {
-                    //     final cubit = context.read<SignupCubit>(); <-------------- بظن ما بدي اياه 
+                    //     final cubit = context.read<SignupCubit>(); <-------------- بظن ما بدي اياه
                     //     return
                     CustomTextFormAuth(
                       mycontroller: _mypassoerdcontroller,
@@ -163,7 +174,10 @@ class _SignuppageState extends State<Signuppage> {
                     ),
               ),
               const SizedBox(height: 40),
-              Coustembuttomauth(onPressed: () {}, text: "Create Account"), // <------------- هون بدي blocbuilder 
+              Coustembuttomauth(
+                onPressed: _onSignupPressed,
+                text: "Create Account",
+              ), // <------------- هون بدي bloclisner مشان الحالة رح حطها اخر الصفحة 
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -193,3 +207,28 @@ class _SignuppageState extends State<Signuppage> {
     );
   }
 }
+
+
+// BlocListener<Signupcubit, SignupState>(
+//   listener: (context, state) {
+//     if (state is SignupFailure) {
+//       ScaffoldMessenger.of(context)
+//           .showSnackBar(SnackBar(content: Text(state.message))); <------------ فوق عند ال scafold 
+//     }
+//     if (state is SignupSuccess) {
+//       context.go('/home'); // عدّل المسار حسب الـ router عندك
+//     }
+//   },
+//   child: ...,
+// )
+
+
+// BlocBuilder<Signupcubit, SignupState>(
+//   builder: (context, state) {
+//     return Coustembuttomauth(
+//       text: "Create Account",
+//       isLoading: state is SignupLoading, <-------- this buttom (create account)
+//       onPressed: _onSignupPressed,
+//     );
+//   },
+// )

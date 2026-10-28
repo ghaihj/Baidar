@@ -1,11 +1,14 @@
 import 'package:baider_app/bloc/auth/forgetpassword/forgetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/forgetpassword/forgetpasswordstate.dart';
 import 'package:baider_app/core/constant/app_colors.dart';
+import 'package:baider_app/core/constant/app_route.dart';
 import 'package:baider_app/core/function/validinput.dart';
+import 'package:baider_app/linkapi.dart';
 import 'package:baider_app/view/widget/auth/coustembuttomauth.dart';
 import 'package:baider_app/view/widget/auth/coustemtextformauth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class Forgetpassword extends StatefulWidget {
   const Forgetpassword({Key? key}) : super(key: key);
@@ -39,13 +42,22 @@ class _ForgetpasswordState extends State<Forgetpassword> {
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
         if (state is ForgetPasswordSuccess) {
-          // لاحقاً: context.push('/verify-code', extra: _emailController.text.trim());
+          context.push(Applink.verifycode, extra: _emailController.text.trim());
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(const SnackBar(content: Text('Code sent')));
         }
       },
       child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          // زر الرجوع (السهم على اليسار)
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () => context.pop(),
+          ),
+        ),
         backgroundColor: Colors.grey[50],
         body: SafeArea(
           child: SingleChildScrollView(
@@ -99,7 +111,15 @@ class _ForgetpasswordState extends State<Forgetpassword> {
                   const SizedBox(height: 110),
                   Center(
                     child:
-                        BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
+                        BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
+                          listener: (context, state) {
+                            if (state is ForgetPasswordSuccess) {
+                              context.push(
+                                AppRoute.verifiycode,
+                                extra: _emailController.text.trim(),
+                              );
+                            }
+                          },
                           builder: (context, state) {
                             return Coustembuttomauth(
                               text: 'Send Code',

@@ -6,4 +6,6 @@ class AppRoute {
   static const String onbordingtwo = "/onbordingtwo";
   static const String chooselanguage = "/chooselanguage";
   static const String forgetpassword = "/forgetpassword";
+  static const String verifiycode = "/verificode";
+  static const String resetpassword = "/resetpassword";
 }

@@ -1,7 +1,10 @@
+import 'package:baider_app/bloc/auth/checkauth/authcubit.dart';
 import 'package:baider_app/bloc/auth/forgetpassword/forgetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/login/logincubit.dart';
 import 'package:baider_app/bloc/auth/logout/logoutcubit.dart';
+import 'package:baider_app/bloc/auth/resetpassword/resetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
+import 'package:baider_app/bloc/auth/verifiycubit/verifiycubit.dart';
 import 'package:baider_app/bloc/settings/locale_cubit.dart';
 import 'package:baider_app/bloc/settings/theme_cubit.dart';
 import 'package:baider_app/core/middleware/auth_interceptor.dart';
@@ -9,7 +12,9 @@ import 'package:baider_app/core/services/token_storage.dart';
 import 'package:baider_app/data/datasource/remote/auth/forgetpassword_data.dart';
 import 'package:baider_app/data/datasource/remote/auth/login_data.dart';
 import 'package:baider_app/data/datasource/remote/auth/logout_data.dart';
+import 'package:baider_app/data/datasource/remote/auth/resetpassword_data.dart';
 import 'package:baider_app/data/datasource/remote/auth/signup_data.dart';
+import 'package:baider_app/data/datasource/remote/auth/verifycode_data.dart';
 import 'package:baider_app/linkapi.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -50,16 +55,21 @@ Future<void> setupDI() async {
   getIt.registerLazySingleton<ThemeCubit>(() => ThemeCubit(getIt()));
   getIt.registerLazySingleton<LocaleCubit>(() => LocaleCubit(getIt()));
   getIt.registerLazySingleton<LogoutData>(() => LogoutData(getIt()));
+  getIt.registerLazySingleton<VerifyCodeData>(() => VerifyCodeData(getIt()));
+  getIt.registerLazySingleton<ResetPasswordData>(() => ResetPasswordData(getIt()));
+  getIt.registerLazySingleton<AuthCubit>(() => AuthCubit(getIt()));
 
   // 3) Cubit: نسخة جديدة كل مرة
   getIt.registerFactory<LoginCubit>(
     () => LoginCubit(getIt<LoginData>(), getIt<TokenStorage>()),
   );
-  getIt.registerFactory<SignupCubit>(() => SignupCubit(getIt<SignUpData>()));
+  getIt.registerFactory<SignupCubit>(() => SignupCubit(getIt(), getIt()));
+  getIt.registerFactory<VerifyCodeCubit>(
+    () => VerifyCodeCubit(getIt(), getIt()),
+  );
   getIt.registerFactory<ForgetPasswordCubit>(
     () => ForgetPasswordCubit(getIt<ForgetPasswordData>()),
   );
-  getIt.registerFactory<LogoutCubit>(
-    () => LogoutCubit(getIt(), getIt()), 
-  );
+  getIt.registerFactory<LogoutCubit>(() => LogoutCubit(getIt(), getIt()));
+  getIt.registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(getIt()));
 }

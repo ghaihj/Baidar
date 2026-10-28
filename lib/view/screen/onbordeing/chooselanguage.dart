@@ -14,15 +14,6 @@ class Chooselanguage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<LocaleCubit, Locale>(
       builder: (context, locale) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          // زر الرجوع (السهم على اليسار)
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () => context.pop(),
-          ),
-        ),
         body: Container(
           padding: EdgeInsets.all(20),
           child: Column(

@@ -7,15 +7,15 @@ class SignUpData {
 
   Future<Map<String, dynamic>> signup(
     String email,
-    String password,
     String username,
+    String password,
   ) async {
     var respones = await dio.post(
       Applink.signup,
       data: {
         "user_email": email,
-        "user_password": password,
         "user_name": username,
+        "user_password": password,
       },
     );
     return respones.data;

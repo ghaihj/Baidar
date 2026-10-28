@@ -1,11 +1,14 @@
 import 'package:baider_app/bloc/auth/forgetpassword/forgetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/login/logincubit.dart';
+import 'package:baider_app/bloc/auth/resetpassword/resetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
 import 'package:baider_app/core/constant/app_route.dart';
 import 'package:baider_app/di/injection.dart';
 import 'package:baider_app/view/screen/auth/forgetpassword.dart';
 import 'package:baider_app/view/screen/auth/loginpage.dart';
+import 'package:baider_app/view/screen/auth/resertpasswordpage.dart';
 import 'package:baider_app/view/screen/auth/signuppage.dart';
+import 'package:baider_app/view/screen/auth/verificode.dart';
 import 'package:baider_app/view/screen/homepage.dart';
 import 'package:baider_app/view/screen/onbordeing/chooselanguage.dart';
 import 'package:baider_app/view/screen/onbordeing/onboardingpage.dart';
@@ -17,7 +20,10 @@ final GoRouter router = GoRouter(
   initialLocation: '/',
 
   routes: [
-    GoRoute(path: '/', builder: (context, state) => Onboardingpage()),
+    GoRoute(
+      path: '/',
+      builder: (context, state) => Onboardingpage(),
+    ),
     GoRoute(path: AppRoute.homepage, builder: (context, state) => Homepage()),
     GoRoute(
       path: AppRoute.loginpage,
@@ -44,11 +50,30 @@ final GoRouter router = GoRouter(
       builder: (context, state) => Chooselanguage(),
     ),
     GoRoute(
+      path: '/',
+      builder: (context, state) {
+        final email = state.extra as String? ?? 'test@test.com';
+        return VerificodePage(email: email);
+      },
+    ),
+    GoRoute(
       path: AppRoute.forgetpassword,
       builder: (context, state) => BlocProvider(
         create: (_) => getIt<ForgetPasswordCubit>(),
         child: Forgetpassword(),
       ),
+    ),
+    GoRoute(
+      path: AppRoute.resetpassword,
+      builder: (context, state) {
+        final args =
+            state.extra as Map<String, String>? ??
+            {'email': 'test@test.com', 'code': '1234'}; // للتجربة فقط
+        return BlocProvider(
+          create: (_) => getIt<ResetPasswordCubit>(),
+          child: ResetPasswordPage(email: args['email']!, code: args['code']!),
+        );
+      },
     ),
   ],
 );
