@@ -22,12 +22,11 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['message' => 'User registered successfully', 'token' => $token], 201);
+        return response()->json(['message' => 'User registered successfully', 'token' => $token, 'status' => "success"], 201);
     }
 
     public function login(Request $request)
     {
-        // Validate the incoming request data
         $validatedData = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
@@ -41,6 +40,13 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['message' => 'User logged in successfully', 'token' => $token], 200);
+        return response()->json(['message' => 'User logged in successfully', 'token' => $token, 'status' => "success"], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'User logged out successfully', 'status' => "success"], 200);
     }
 }
