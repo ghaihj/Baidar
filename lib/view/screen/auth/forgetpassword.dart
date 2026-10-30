@@ -3,7 +3,6 @@ import 'package:baider_app/bloc/auth/forgetpassword/forgetpasswordstate.dart';
 import 'package:baider_app/core/constant/app_colors.dart';
 import 'package:baider_app/core/constant/app_route.dart';
 import 'package:baider_app/core/function/validinput.dart';
-import 'package:baider_app/linkapi.dart';
 import 'package:baider_app/view/widget/auth/coustembuttomauth.dart';
 import 'package:baider_app/view/widget/auth/coustemtextformauth.dart';
 import 'package:flutter/material.dart';
@@ -42,10 +41,13 @@ class _ForgetpasswordState extends State<Forgetpassword> {
           ).showSnackBar(SnackBar(content: Text(state.message)));
         }
         if (state is ForgetPasswordSuccess) {
-          context.push(Applink.verifycode, extra: _emailController.text.trim());
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(const SnackBar(content: Text('Code sent')));
+          context.push(
+            AppRoute.verifiycode,
+            extra: _emailController.text.trim(),
+          );
         }
       },
       child: Scaffold(
@@ -106,20 +108,12 @@ class _ForgetpasswordState extends State<Forgetpassword> {
                     iconData: Icons.email,
                     mycontroller: _emailController,
                     labeltext: "",
-                    valid: (val) => validInput("email", 6, 30, "email"),
+                    valid: (val) => validInput(val!, 6, 60, "email"),
                   ),
                   const SizedBox(height: 110),
                   Center(
                     child:
-                        BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
-                          listener: (context, state) {
-                            if (state is ForgetPasswordSuccess) {
-                              context.push(
-                                AppRoute.verifiycode,
-                                extra: _emailController.text.trim(),
-                              );
-                            }
-                          },
+                        BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
                           builder: (context, state) {
                             return Coustembuttomauth(
                               text: 'Send Code',

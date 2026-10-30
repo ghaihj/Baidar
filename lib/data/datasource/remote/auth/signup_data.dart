@@ -13,9 +13,9 @@ class SignUpData {
     var respones = await dio.post(
       Applink.signup,
       data: {
-        "user_email": email,
-        "user_name": username,
-        "user_password": password,
+        "email": email,
+        "name": username,
+        "password": password,
       },
     );
     return respones.data;

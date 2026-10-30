@@ -2,7 +2,9 @@ import 'package:baider_app/bloc/auth/forgetpassword/forgetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/login/logincubit.dart';
 import 'package:baider_app/bloc/auth/resetpassword/resetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
+import 'package:baider_app/bloc/auth/verifiycubit/verifiycubit.dart';
 import 'package:baider_app/core/constant/app_route.dart';
+import 'package:baider_app/data/datasource/remote/auth/resetpassword_data.dart';
 import 'package:baider_app/di/injection.dart';
 import 'package:baider_app/view/screen/auth/forgetpassword.dart';
 import 'package:baider_app/view/screen/auth/loginpage.dart';
@@ -13,6 +15,7 @@ import 'package:baider_app/view/screen/homepage.dart';
 import 'package:baider_app/view/screen/onbordeing/chooselanguage.dart';
 import 'package:baider_app/view/screen/onbordeing/onboardingpage.dart';
 import 'package:baider_app/view/screen/onbordeing/onbordingtwopage.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,10 +23,7 @@ final GoRouter router = GoRouter(
   initialLocation: '/',
 
   routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => Onboardingpage(),
-    ),
+    GoRoute(path: '/', builder: (context, state) => Onboardingpage()),
     GoRoute(path: AppRoute.homepage, builder: (context, state) => Homepage()),
     GoRoute(
       path: AppRoute.loginpage,
@@ -50,10 +50,13 @@ final GoRouter router = GoRouter(
       builder: (context, state) => Chooselanguage(),
     ),
     GoRoute(
-      path: '/',
+      path: AppRoute.verifiycode,
       builder: (context, state) {
-        final email = state.extra as String? ?? 'test@test.com';
-        return VerificodePage(email: email);
+        final email = state.extra as String;
+        return BlocProvider(
+          create: (_) => getIt<VerifyCodeCubit>(),
+          child: VerificodePage(email: email),
+        );
       },
     ),
     GoRoute(
@@ -66,12 +69,17 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoute.resetpassword,
       builder: (context, state) {
-        final args =
-            state.extra as Map<String, String>? ??
-            {'email': 'test@test.com', 'code': '1234'}; // للتجربة فقط
+        final extra = state.extra as Map<String, String>;
         return BlocProvider(
-          create: (_) => getIt<ResetPasswordCubit>(),
-          child: ResetPasswordPage(email: args['email']!, code: args['code']!),
+          create: (_) => ResetPasswordCubit(
+           
+            ResetPasswordData(getIt<Dio>()),
+            // أو حسب شو عندك بالـ constructor
+          ),
+          child: ResetPasswordPage(
+            email: extra['email']!,
+            code: extra['code']!,
+          ),
         );
       },
     ),
