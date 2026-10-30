@@ -61,7 +61,7 @@ Future<void> setupDI() async {
 
   // 3) Cubit: نسخة جديدة كل مرة
   getIt.registerFactory<LoginCubit>(
-    () => LoginCubit(getIt<LoginData>(), getIt<TokenStorage>()),
+    () => LoginCubit(getIt<LoginData>(), getIt()),
   );
   getIt.registerFactory<SignupCubit>(() => SignupCubit(getIt(), getIt()));
   getIt.registerFactory<VerifyCodeCubit>(

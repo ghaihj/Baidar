@@ -35,27 +35,19 @@ class _LoginpageState extends State<Loginpage> {
     super.dispose();
   }
 
+  void _onLoginPressed() {
+    if (!_formKey.currentState!.validate()) return;
+    context.read<LoginCubit>().login(
+      _emailController.text.trim(), // trim للإيميل
+      _passwordController.text, // كلمة السر بدون trim
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubit, Loginstate>(
       listener: (context, state) {
-        if (state is Loginloading) {
-          // عرض لودر فوق الشاشة
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) => const Center(
-              child: CircularProgressIndicator(color: AppColors.primarycolor),
-            ),
-          );
-        } else if (state is Loginsecuses) {
-          // أغلق اللودر لو مفتوح
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          // روح للصفحة الرئيسية بعد النجاح
-          context.go(AppRoute.homepage); // ← عدّل اسم الراوت حسب مشروعك
-        } else if (state is Loginfaliuer) {
-          // أغلق اللودر
-          Navigator.of(context).pop();
+        if (state is Loginfaliuer) {
           // اعرض رسالة الخطأ
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -177,8 +169,7 @@ class _LoginpageState extends State<Loginpage> {
                             iconData: _obscurePassword
                                 ? Icons.visibility_off_outlined
                                 : Icons.visibility_outlined,
-                            valid: (val) =>
-                                validInput("password", 6, 30, "password"),
+                            valid: (val) => validInput(val!, 6, 30, "password"),
                             isNumber: false,
                           ),
                         ),
@@ -201,16 +192,14 @@ class _LoginpageState extends State<Loginpage> {
                         ),
                         const SizedBox(height: 16),
                         // زر Sign In
-                        Coustembuttomauth(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              context.read<LoginCubit>().login(
-                                _emailController.text,
-                                _passwordController.text,
-                              );
-                            }
+                        BlocBuilder<LoginCubit, Loginstate>(
+                          builder: (context, state) {
+                            return Coustembuttomauth(
+                              isLoading: state is Loginloading,
+                              onPressed: _onLoginPressed,
+                              text: "login_in",
+                            );
                           },
-                          text: "login_in",
                         ),
                         const SizedBox(height: 70),
                         // رابط "ليس لديك حساب؟ إنشاء حساب"

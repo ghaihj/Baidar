@@ -1,7 +1,6 @@
 import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
 import 'package:baider_app/bloc/auth/signup/signupstate.dart';
 import 'package:baider_app/core/constant/app_colors.dart';
-import 'package:baider_app/core/constant/app_route.dart';
 import 'package:baider_app/core/function/validinput.dart';
 import 'package:baider_app/view/widget/auth/coustembuttomauth.dart';
 import 'package:baider_app/view/widget/auth/coustemtextformauth.dart';
@@ -45,26 +44,7 @@ class _SignuppageState extends State<Signuppage> {
   Widget build(BuildContext context) {
     return BlocListener<SignupCubit, Signupstate>(
       listener: (context, state) {
-        if (state is Signuploading) {
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (_) => const Center(
-              child: CircularProgressIndicator(color: AppColors.primarycolor),
-            ),
-          );
-        } else if (state is Signupsecuess) {
-          Navigator.of(context).popUntil((route) => route.isFirst);
-          // بعد النجاح → روح لصفحة Login (أو Homepage لو بتحب يسجل دخول تلقائي)
-          context.go(AppRoute.homepage);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Account created successfully! '),
-              backgroundColor: Colors.green,
-            ),
-          );
-        } else if (state is Signupfaliuar) {
-          Navigator.of(context).pop();
+        if (state is Signupfaliuar) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.massegs), // ← حسب اسم الحقل بالـ state عندك
@@ -201,10 +181,15 @@ class _SignuppageState extends State<Signuppage> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                Coustembuttomauth(
-                  onPressed: _onSignupPressed,
-                  text: "Create Account",
-                ), // <------------- هون بدي bloclisner مشان الحالة رح حطها اخر الصفحة
+                BlocBuilder<SignupCubit, Signupstate>(
+                  builder: (context, state) {
+                    return Coustembuttomauth(
+                      isLoading: state is Signuploading,
+                      onPressed: _onSignupPressed,
+                      text: "Create Account",
+                    );
+                  },
+                ),
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -1,3 +1,4 @@
+import 'package:baider_app/bloc/auth/checkauth/authcubit.dart';
 import 'package:baider_app/bloc/settings/locale_cubit.dart';
 import 'package:baider_app/bloc/settings/theme_cubit.dart';
 import 'package:baider_app/di/injection.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupDI();
+  await getIt<AuthCubit>().checkAuth();
   runApp(const MyApp());
 }
 
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider.value(value: getIt<ThemeCubit>()),
         BlocProvider.value(value: getIt<LocaleCubit>()),
-        // BlocProvider.value(value: getIt<AuthCubit>()), 
+        // BlocProvider.value(value: getIt<AuthCubit>()),
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {

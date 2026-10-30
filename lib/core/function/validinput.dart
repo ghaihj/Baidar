@@ -15,12 +15,6 @@ String? validInput(String val, int min, int max, String type) {
     }
   }
 
-  if (type == "phone") {
-    if (!RegExp(r'^\+?[0-9]{7,15}$').hasMatch(val)) {
-      return "رقم الهاتف غير صالح";
-    }
-  }
-
   if (val.length < min) {
     return "يجب ألا يقل عن $min أحرف";
   }
