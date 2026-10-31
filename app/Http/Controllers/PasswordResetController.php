@@ -4,14 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Mail\ResetPasswordCodeMail;
 use App\Models\PasswordResetCode;
+use Dedoc\Scramble\Attributes\Endpoint;
+use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
+#[Group(
+    name: 'Password Reset',
+    description: 'Recover account access by requesting, verifying, and using an email reset code.',
+)]
 class PasswordResetController extends Controller
 {
     private const CODE_EXPIRY_MINUTES = 15;
 
+    #[Endpoint(
+        title: 'Request a password reset code',
+        description: 'Send a four-digit password reset code to the email address associated with the account. The code expires after 15 minutes.',
+    )]
     public function forgotPassword(Request $request)
     {
         $request->validate([
@@ -39,6 +49,10 @@ class PasswordResetController extends Controller
         return response()->json(['message' => 'تم إرسال رمز التحقق إلى بريدك الإلكتروني', 'status' => "success"], 200);
     }
 
+    #[Endpoint(
+        title: 'Verify a password reset code',
+        description: 'Check whether the four-digit reset code for the supplied email address is valid and has not expired.',
+    )]
     public function verifyResetCode(Request $request)
     {
         $request->validate([
@@ -62,6 +76,10 @@ class PasswordResetController extends Controller
         return response()->json(['message' => 'الرمز صحيح، يمكنك الآن إعادة تعيين كلمة المرور', 'status' => "success"], 200);
     }
 
+    #[Endpoint(
+        title: 'Reset a password',
+        description: 'Set a new password by providing the account email, a valid reset code, and matching password and password confirmation values.',
+    )]
     public function resetPassword(Request $request)
     {
         $request->validate([
