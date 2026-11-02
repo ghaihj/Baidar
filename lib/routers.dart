@@ -17,12 +17,12 @@ import 'package:baider_app/view/screen/auth/verificode.dart';
 import 'package:baider_app/view/screen/homepage.dart';
 import 'package:baider_app/view/screen/onbordeing/chooselanguage.dart';
 import 'package:baider_app/view/screen/onbordeing/onboardingpage.dart';
+import 'package:baider_app/view/screen/onbordeing/onbordingthree.dart';
 import 'package:baider_app/view/screen/onbordeing/onbordingtwopage.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/foundation.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: AppRoute.homepage,
@@ -36,6 +36,7 @@ final GoRouter router = GoRouter(
     const introPages = [
       AppRoute.onbording,
       AppRoute.onbordingtwo,
+      AppRoute.onbordingthree,
       AppRoute.chooselanguage,
     ];
     const authPages = [
@@ -47,7 +48,6 @@ final GoRouter router = GoRouter(
     ];
     final isIntroPage = introPages.contains(loc);
     final isAuthPage = authPages.contains(loc);
-
 
     // 1) مسجّل: لا صفحات بداية ولا صفحات دخول
     if (authState is Authenticated) {
@@ -84,6 +84,10 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoute.onbordingtwo,
       builder: (context, state) => Onbordingtwopage(),
+    ),
+    GoRoute(
+      path: AppRoute.onbordingthree,
+      builder: (context, state) => Onbordingthree(),
     ),
     GoRoute(
       path: AppRoute.chooselanguage,

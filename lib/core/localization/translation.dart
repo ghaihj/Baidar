@@ -7,7 +7,7 @@ class AppTranslations {
       'login_in': 'تسجيل الدخول',
       'skip': 'تخطي',
       'continue': 'متابعة',
-      'welcome_back' : 'اهلا بعودتك',
+      'welcome_back': 'اهلا بعودتك',
       'login_subtitle': 'سجّل دخولك لمتابعة إدارة أرضك',
       'email_label': 'البريد الإلكتروني',
       'email_hint': 'أدخل بريدك الإلكتروني',
@@ -16,6 +16,11 @@ class AppTranslations {
       'forgot_password': 'نسيت كلمة المرور؟',
       'no_account': 'ليس لديك حساب؟',
       'sign_up': 'إنشاء حساب',
+      'onb2_title': 'ماذا تستطيع أن تفعل مع بيدر؟',
+      'onb2_feature1': 'اكتشف سلوك المحاصيل حسب المنطقة والمناخ',
+      'onb2_feature2':
+          'معلومات عن الري الدقيق ودرجة حموضة التربة واحتياجات أشعة الشمس',
+      'onb2_feature3': 'خطّط مسبقاً مع تقويم زراعي تفاعلي',
     },
     'en': {
       'choose_language': 'Choose Your Preferred language',
@@ -31,6 +36,11 @@ class AppTranslations {
       'forgot_password': 'Forgot Password?',
       'no_account': 'Don\'t have an account?',
       'sign_up': 'Sign Up',
+      'onb2_title': 'What can you do with baidar?',
+      'onb2_feature1': 'Explore crop behavior by region & climate',
+      'onb2_feature2':
+          'Information on precision irrigation, soil pH and sunlight requirements.',
+      'onb2_feature3': 'Plan ahead with an interactive agricultural calendar',
     },
   };
   // دالة مساعدة للترجمة
