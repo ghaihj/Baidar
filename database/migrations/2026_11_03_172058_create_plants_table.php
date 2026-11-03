@@ -12,10 +12,12 @@ return new class extends Migration
             $table->id();
             $table->string('name_ar', 150)->index()->comment('الاسم العربي');
             $table->string('name_en', 150)->nullable()->comment('الاسم الإنجليزي');
-            $table->string('category', 50)->index()->comment('الفئة: خضار، أشجار مثمرة، أعشاب، زينة');
+            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->text('description')->nullable()->comment('وصف موجز');
             $table->string('image_url', 500)->nullable()->comment('رابط الصورة التوضيحية');
             $table->timestamps();
+
+            $table->index('category_id');
         });
     }
 

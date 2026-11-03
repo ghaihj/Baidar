@@ -23,4 +23,9 @@ class Plant extends Model
     {
         return $this->regionProfiles()->where('region_id', $regionId)->first();
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

@@ -13,6 +13,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -53,19 +54,18 @@ class PlantResource extends Resource
                     ])
                     ->required(),
 
-                TextInput::make('family')
-                    ->label('الفصيلة النباتية')
-                    ->maxLength(100),
 
                 Textarea::make('description')
                     ->label('الوصف')
                     ->rows(4)
                     ->columnSpanFull(),
 
-                TextInput::make('image_url')
-                    ->label('رابط الصورة')
-                    ->maxLength(500)
-                    ->url(),
+                FileUpload::make('image_url')
+                    ->label('صورة النبات')
+                    ->image()
+                    ->directory('plants')
+                    ->visibility('public')
+                    ->nullable(),
             ]);
     }
 
@@ -82,16 +82,11 @@ class PlantResource extends Resource
                 TextColumn::make('name_en')
                     ->label('الاسم الإنجليزي')
                     ->searchable(),
-                TextColumn::make('category')
+                Select::make('category_id')
                     ->label('الفئة')
-                    ->badge()
-                    ->color(fn(string $state): string => match ($state) {
-                        'خضار' => 'success',
-                        'أشجار مثمرة' => 'warning',
-                        'أعشاب' => 'info',
-                        'زينة' => 'danger',
-                        default => 'gray',
-                    }),
+                    ->relationship('category', 'name_ar')
+                    ->required()
+                    ->preload(),
                 TextColumn::make('created_at')
                     ->label('أضيفت')
                     ->dateTime('Y-m-d'),
