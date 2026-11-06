@@ -5,6 +5,8 @@ import 'package:baider_app/bloc/auth/logout/logoutcubit.dart';
 import 'package:baider_app/bloc/auth/resetpassword/resetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
 import 'package:baider_app/bloc/auth/verifiycubit/verifiycubit.dart';
+import 'package:baider_app/bloc/home/homecubit.dart';
+import 'package:baider_app/bloc/plants/plantscubit.dart';
 import 'package:baider_app/bloc/settings/locale_cubit.dart';
 import 'package:baider_app/bloc/settings/theme_cubit.dart';
 import 'package:baider_app/core/middleware/auth_interceptor.dart';
@@ -15,6 +17,9 @@ import 'package:baider_app/data/datasource/remote/auth/logout_data.dart';
 import 'package:baider_app/data/datasource/remote/auth/resetpassword_data.dart';
 import 'package:baider_app/data/datasource/remote/auth/signup_data.dart';
 import 'package:baider_app/data/datasource/remote/auth/verifycode_data.dart';
+import 'package:baider_app/data/datasource/remote/favourite_data.dart';
+import 'package:baider_app/data/datasource/remote/home_data.dart';
+import 'package:baider_app/data/datasource/remote/plants_data.dart';
 import 'package:baider_app/linkapi.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -56,10 +61,17 @@ Future<void> setupDI() async {
   getIt.registerLazySingleton<LocaleCubit>(() => LocaleCubit(getIt()));
   getIt.registerLazySingleton<LogoutData>(() => LogoutData(getIt()));
   getIt.registerLazySingleton<VerifyCodeData>(() => VerifyCodeData(getIt()));
-  getIt.registerLazySingleton<ResetPasswordData>(() => ResetPasswordData(getIt()));
+  getIt.registerLazySingleton<ResetPasswordData>(
+    () => ResetPasswordData(getIt()),
+  );
   getIt.registerLazySingleton<AuthCubit>(() => AuthCubit(getIt()));
+  getIt.registerLazySingleton<HomeData>(() => HomeData(getIt()));
+  getIt.registerLazySingleton<PlantsData>(() => PlantsData(getIt()));
+  getIt.registerLazySingleton<FavoriteData>(() => FavoriteData(getIt()));
 
-  // 3) Cubit: نسخة جديدة كل مرة
+
+
+  // 3) Cubit: نسخة جديدة كل مرة ===============================================
   getIt.registerFactory<LoginCubit>(
     () => LoginCubit(getIt<LoginData>(), getIt()),
   );
@@ -72,4 +84,6 @@ Future<void> setupDI() async {
   );
   getIt.registerFactory<LogoutCubit>(() => LogoutCubit(getIt(), getIt()));
   getIt.registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(getIt()));
+  getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeData>()));
+  getIt.registerFactory<PlantsCubit>(() => PlantsCubit(getIt<PlantsData>()));
 }

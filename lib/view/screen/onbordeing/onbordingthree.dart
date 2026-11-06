@@ -32,7 +32,7 @@ class Onbordingthree extends StatelessWidget {
               ),
               // 2) صورة الحقول (اختيارية: لو مش موجودة ما بيصير شي)
               Image.asset(
-                AppImages.onbordingthree, 
+                AppImages.onbordingthree,
                 fit: BoxFit.cover,
                 color: const Color(0x663F7A3A),
                 colorBlendMode: BlendMode.srcOver,
@@ -82,8 +82,8 @@ class Onbordingthree extends StatelessWidget {
               ),
               // 4) زر skip بالزاوية
               PositionedDirectional(
-                bottom: 0,
-                end: 0,
+                bottom: 24,
+                end: 24,
                 child: SafeArea(
                   child: TextButton(
                     onPressed: () => context.go(AppRoute.chooselanguage),
