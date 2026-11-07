@@ -32,7 +32,7 @@ class PlantDetailsSheet extends StatelessWidget {
   }
 
   Widget _buildLoading() {
-    return  Container(
+    return Container(
       height: 400,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -114,25 +114,57 @@ class PlantDetailsSheet extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // قسم الماء والشمس
+                // ✅ قسم الماء والشمس (مفصل)
                 _buildSection(
                   locale,
                   title: AppTranslations.tr(locale, 'water_sunlight'),
                   children: [
                     _buildInfoRow(
                       icon: Icons.opacity,
-                      label: AppTranslations.tr(locale, 'water'),
-                      value: state.plant.getLocalizedWater(locale),
+                      label: AppTranslations.tr(locale, 'irrigation'),
+                      value: state.plant.irrigation,
+                    ),
+                    _buildInfoRow(
+                      icon: Icons.refresh,
+                      label: AppTranslations.tr(locale, 'frequency'),
+                      value: state.plant.getLocalizedFrequency(locale),
                     ),
                     _buildInfoRow(
                       icon: Icons.wb_sunny_outlined,
-                      label: AppTranslations.tr(locale, 'sunlight'),
-                      value: state.plant.getLocalizedSunlight(locale),
+                      label: AppTranslations.tr(locale, 'min_sunlight'),
+                      value: state.plant.minSunlight,
+                    ),
+                    _buildInfoRow(
+                      icon: Icons.wb_sunny,
+                      label: AppTranslations.tr(locale, 'max_sunlight'),
+                      value: state.plant.maxSunlight,
                     ),
                   ],
                 ),
 
                 const SizedBox(height: 20),
+                // ✅ قسم معلومات إضافية
+                _buildSection(
+                  locale,
+                  title: AppTranslations.tr(locale, 'additional_info'),
+                  children: [
+                    _buildInfoRow(
+                      icon: Icons.space_bar,
+                      label: AppTranslations.tr(locale, 'plant_spacing'),
+                      value: state.plant.plantSpacing,
+                    ),
+                    _buildInfoRow(
+                      icon: Icons.grain_outlined,
+                      label: AppTranslations.tr(locale, 'fertilization'),
+                      value: state.plant.getLocalizedFertilization(locale),
+                    ),
+                    _buildInfoRow(
+                      icon: Icons.bug_report_outlined,
+                      label: AppTranslations.tr(locale, 'common_pests'),
+                      value: state.plant.getLocalizedPests(locale),
+                    ),
+                  ],
+                ),
 
                 // الوصف
                 if (state.plant.description.isNotEmpty ||
@@ -244,7 +276,6 @@ class PlantDetailsSheet extends StatelessWidget {
             ),
           ),
 
-          // زر الإغلاق (X) - أعلى-يمين
           Positioned(
             top: 16,
             right: 16,

@@ -9,4 +9,7 @@ class TokenStorage {
   Future<void> save(String token) => storage.write(key: keytok, value: token);
   Future<String?> read() => storage.read(key: keytok);
   Future<void> clear() => storage.delete(key: keytok);
+  Future<void> clearToken() async {
+    await storage.delete(key: keytok);
+  }
 }

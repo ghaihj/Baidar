@@ -5,6 +5,7 @@ import 'package:baider_app/bloc/auth/logout/logoutcubit.dart';
 import 'package:baider_app/bloc/auth/resetpassword/resetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
 import 'package:baider_app/bloc/auth/verifiycubit/verifiycubit.dart';
+import 'package:baider_app/bloc/favorites/favorites_cubit.dart';
 import 'package:baider_app/bloc/home/homecubit.dart';
 import 'package:baider_app/bloc/plants/plantscubit.dart';
 import 'package:baider_app/bloc/settings/locale_cubit.dart';
@@ -68,6 +69,7 @@ Future<void> setupDI() async {
   getIt.registerLazySingleton<HomeData>(() => HomeData(getIt()));
   getIt.registerLazySingleton<PlantsData>(() => PlantsData(getIt()));
   getIt.registerLazySingleton<FavoriteData>(() => FavoriteData(getIt()));
+  getIt.registerLazySingleton<FavoriteData>(() => FavoriteData(getIt()));
 
 
 
@@ -86,4 +88,5 @@ Future<void> setupDI() async {
   getIt.registerFactory<ResetPasswordCubit>(() => ResetPasswordCubit(getIt()));
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeData>()));
   getIt.registerFactory<PlantsCubit>(() => PlantsCubit(getIt<PlantsData>()));
+  getIt.registerFactory<FavoritesCubit>(() => FavoritesCubit(getIt<FavoriteData>()));
 }

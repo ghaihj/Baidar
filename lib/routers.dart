@@ -5,6 +5,7 @@ import 'package:baider_app/bloc/auth/login/logincubit.dart';
 import 'package:baider_app/bloc/auth/resetpassword/resetpasswordcubit.dart';
 import 'package:baider_app/bloc/auth/signup/signupcubit.dart';
 import 'package:baider_app/bloc/auth/verifiycubit/verifiycubit.dart';
+import 'package:baider_app/bloc/favorites/favorites_cubit.dart';
 import 'package:baider_app/bloc/home/homecubit.dart';
 import 'package:baider_app/bloc/plants/plantscubit.dart';
 import 'package:baider_app/core/constant/app_route.dart';
@@ -151,7 +152,12 @@ final GoRouter router = GoRouter(
 
     GoRoute(
       path: AppRoute.favouretpage,
-      builder: (context, state) => MainLayout(child: Favouretpage()),
+      builder: (context, state) => MainLayout(
+        child: BlocProvider(
+          create: (_) => getIt<FavoritesCubit>(),
+          child: const Favouretpage(),
+        ),
+      ),
     ),
     GoRoute(
       path: AppRoute.plants,
