@@ -13,7 +13,6 @@ return new class extends Migration
             $table->uuid('uuid')->unique()->comment('معرف فريد يولده التطبيق');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('plant_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('region_id')->constrained()->cascadeOnDelete();
 
             $table->date('planted_at')->nullable()->comment('تاريخ الزراعة الفعلي');
             $table->text('notes')->nullable()->comment('ملاحظات المستخدم');
