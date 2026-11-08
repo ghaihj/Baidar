@@ -19,5 +19,5 @@ class Profilepage extends StatelessWidget {
         child: Text('إعادة ضبط التطبيق'),
       ),
     );
-  }
+  } 
 }
