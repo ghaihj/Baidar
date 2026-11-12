@@ -31,3 +31,10 @@ Route::controller(\App\Http\Controllers\PlantController::class)->prefix('plants'
     Route::get('{plant}', 'show')->middleware('auth:sanctum');
     Route::post('', 'store')->middleware('auth:sanctum');
 });
+
+Route::controller(\App\Http\Controllers\ProfileController::class)->prefix('profile')->group(function () {
+    Route::get('', 'index')->middleware('auth:sanctum');
+    Route::get('{user}', 'show')->middleware('auth:sanctum');
+    Route::put('{user}', 'update')->middleware('auth:sanctum');
+    Route::delete('{user}', 'destroy')->middleware('auth:sanctum');
+});
