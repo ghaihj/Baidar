@@ -70,9 +70,10 @@ class PlantDetailsSheet extends StatelessWidget {
     PlantDetailsLoaded state,
   ) {
     return Container(
-      decoration: const BoxDecoration(
+      height: MediaQuery.of(context).size.height *0.85, 
+      decoration: const BoxDecoration( 
         color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -98,18 +99,23 @@ class PlantDetailsSheet extends StatelessWidget {
                 ),
                 _buildInfoRow(
                   icon: Icons.science_outlined,
-                  label: 'pH',
-                  value: state.plant.ph,
+                  label: 'pH Min',
+                  value: state.plant.phmin,
                 ),
                 _buildInfoRow(
                   icon: Icons.thermostat_outlined,
-                  label: AppTranslations.tr(locale, 'temperature'),
-                  value: state.plant.temperature,
+                  label: AppTranslations.tr(locale, 'temperature_min'),
+                  value: state.plant.tempminc,
+                ),
+                _buildInfoRow(
+                  icon: Icons.thermostat_outlined,
+                  label: AppTranslations.tr(locale, 'temperature_max'),
+                  value: state.plant.tempmaxc,
                 ),
                 _buildInfoRow(
                   icon: Icons.water_drop_outlined,
                   label: AppTranslations.tr(locale, 'humidity'),
-                  value: state.plant.humidity,
+                  value: '${state.plant.humiditymin}% - ${state.plant.humiditymax}%', 
                 ),
 
                 const SizedBox(height: 20),
@@ -132,12 +138,12 @@ class PlantDetailsSheet extends StatelessWidget {
                     _buildInfoRow(
                       icon: Icons.wb_sunny_outlined,
                       label: AppTranslations.tr(locale, 'min_sunlight'),
-                      value: state.plant.minSunlight,
+                      value: '${state.plant.minSunlight} hours',
                     ),
                     _buildInfoRow(
                       icon: Icons.wb_sunny,
                       label: AppTranslations.tr(locale, 'max_sunlight'),
-                      value: state.plant.maxSunlight,
+                      value: '${state.plant.maxSunlight} hours',
                     ),
                   ],
                 ),
@@ -151,7 +157,7 @@ class PlantDetailsSheet extends StatelessWidget {
                     _buildInfoRow(
                       icon: Icons.space_bar,
                       label: AppTranslations.tr(locale, 'plant_spacing'),
-                      value: state.plant.plantSpacing,
+                      value:  '${state.plant.plantSpacing} cm', 
                     ),
                     _buildInfoRow(
                       icon: Icons.grain_outlined,
@@ -161,11 +167,11 @@ class PlantDetailsSheet extends StatelessWidget {
                     _buildInfoRow(
                       icon: Icons.bug_report_outlined,
                       label: AppTranslations.tr(locale, 'common_pests'),
-                      value: state.plant.getLocalizedPests(locale),
+                      value: '${state.plant.commondiseases} ',
                     ),
                   ],
                 ),
-
+                SizedBox(height: 20),
                 // الوصف
                 if (state.plant.description.isNotEmpty ||
                     state.plant.descriptionAr.isNotEmpty)
@@ -205,7 +211,7 @@ class PlantDetailsSheet extends StatelessWidget {
         children: [
           // الصورة
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
             child: Image.network(
               state.plant.imageUrl,
               fit: BoxFit.cover,
@@ -225,34 +231,14 @@ class PlantDetailsSheet extends StatelessWidget {
           // تعتيم خفيف فوق الصورة
           Container(
             decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(25),
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [Colors.black.withOpacity(0.3), Colors.transparent],
               ),
             ),
-          ),
-
-          // اسم المنطقة (أعلى-يسار)
-          Positioned(
-            top: 16,
-            left: 16,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                state.plant.getLocalizedRegion(locale),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
+          ),          
 
           // زر القلب (favorite) - أعلى-يمين
           Positioned(

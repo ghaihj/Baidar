@@ -131,6 +131,9 @@ class _PlantspageState extends State<Plantspage> {
               showModalBottomSheet(
                 context: context,
                 isScrollControlled: true,
+                constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.8,
+                ),  
                 backgroundColor: Colors.transparent,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
@@ -140,7 +143,9 @@ class _PlantspageState extends State<Plantspage> {
                     getIt<FavoriteData>(),
                     state.plants[index], // ← النبتة المضغوطة
                   )..loadDetails(),
-                  child: const PlantDetailsSheet(),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: const PlantDetailsSheet()),
                 ),
               );
             },

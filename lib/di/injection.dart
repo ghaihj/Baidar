@@ -8,6 +8,7 @@ import 'package:baider_app/bloc/auth/verifiycubit/verifiycubit.dart';
 import 'package:baider_app/bloc/favorites/favorites_cubit.dart';
 import 'package:baider_app/bloc/home/homecubit.dart';
 import 'package:baider_app/bloc/plants/plantscubit.dart';
+import 'package:baider_app/bloc/profile/profile_cubit.dart';
 import 'package:baider_app/bloc/settings/locale_cubit.dart';
 import 'package:baider_app/bloc/settings/theme_cubit.dart';
 import 'package:baider_app/core/middleware/auth_interceptor.dart';
@@ -21,6 +22,7 @@ import 'package:baider_app/data/datasource/remote/auth/verifycode_data.dart';
 import 'package:baider_app/data/datasource/remote/favourite_data.dart';
 import 'package:baider_app/data/datasource/remote/home_data.dart';
 import 'package:baider_app/data/datasource/remote/plants_data.dart';
+import 'package:baider_app/data/datasource/remote/profile_data.dart';
 import 'package:baider_app/linkapi.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -69,7 +71,7 @@ Future<void> setupDI() async {
   getIt.registerLazySingleton<HomeData>(() => HomeData(getIt()));
   getIt.registerLazySingleton<PlantsData>(() => PlantsData(getIt()));
   getIt.registerLazySingleton<FavoriteData>(() => FavoriteData(getIt()));
-  getIt.registerLazySingleton<FavoriteData>(() => FavoriteData(getIt()));
+  getIt.registerLazySingleton<ProfileData>(() => ProfileData(getIt()));
 
 
 
@@ -89,4 +91,5 @@ Future<void> setupDI() async {
   getIt.registerFactory<HomeCubit>(() => HomeCubit(getIt<HomeData>()));
   getIt.registerFactory<PlantsCubit>(() => PlantsCubit(getIt<PlantsData>()));
   getIt.registerFactory<FavoritesCubit>(() => FavoritesCubit(getIt<FavoriteData>()));
+  getIt.registerFactory<ProfileCubit>(() => ProfileCubit(getIt<ProfileData>()));
 }

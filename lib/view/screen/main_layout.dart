@@ -9,7 +9,8 @@ import 'package:go_router/go_router.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
-  const MainLayout({Key? key, required this.child}) : super(key: key);
+   final Widget? drawer;
+  const MainLayout({Key? key, required this.child, this.drawer}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class MainLayout extends StatelessWidget {
           resizeToAvoidBottomInset: true,
           backgroundColor: Colors.grey[50],
           body: child,
+          drawer: drawer,
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: currentIndex,
             showSelectedLabels: true,

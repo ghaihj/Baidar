@@ -8,6 +8,7 @@ import 'package:baider_app/bloc/auth/verifiycubit/verifiycubit.dart';
 import 'package:baider_app/bloc/favorites/favorites_cubit.dart';
 import 'package:baider_app/bloc/home/homecubit.dart';
 import 'package:baider_app/bloc/plants/plantscubit.dart';
+import 'package:baider_app/bloc/profile/profile_cubit.dart';
 import 'package:baider_app/core/constant/app_route.dart';
 import 'package:baider_app/core/function/go_router_refresh_stream.dart';
 import 'package:baider_app/data/datasource/remote/auth/resetpassword_data.dart';
@@ -27,6 +28,7 @@ import 'package:baider_app/view/screen/onbordeing/onbordingthree.dart';
 import 'package:baider_app/view/screen/onbordeing/onbordingtwopage.dart';
 import 'package:baider_app/view/screen/plantspage.dart';
 import 'package:baider_app/view/screen/profilepage.dart';
+import 'package:baider_app/view/widget/home/custom_drawer.dart';
 import 'package:baider_app/view/widget/plant_details/plant_details_sheet.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +36,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: AppRoute.test,
+  initialLocation: AppRoute.homepage,
   refreshListenable: GoRouterRefreshStream(getIt<AuthCubit>().stream),
   redirect: (context, state) {
     final authState = getIt<AuthCubit>().state;
@@ -139,7 +141,12 @@ final GoRouter router = GoRouter(
     // =============== home =================
     GoRoute(
       path: AppRoute.profilepage,
-      builder: (context, state) => MainLayout(child: Profilepage()),
+      builder: (context, state) => MainLayout(
+        child: BlocProvider(
+          create: (_) => getIt<ProfileCubit>(),
+          child: const Profilepage(),
+        ),
+      ),
     ),
     // GoRoute(
     //   path: AppRoute.test,
@@ -178,6 +185,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoute.homepage,
       builder: (context, state) => MainLayout(
+        drawer: const CustomDrawer(),
         child: BlocProvider(
           create: (_) => getIt<HomeCubit>(),
           child: const Homepage(),

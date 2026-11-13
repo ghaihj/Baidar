@@ -1,6 +1,7 @@
 import 'package:baider_app/bloc/home/homecubit.dart';
 import 'package:baider_app/bloc/home/homestate.dart';
 import 'package:baider_app/bloc/settings/locale_cubit.dart';
+import 'package:baider_app/core/constant/app_colors.dart';
 import 'package:baider_app/core/constant/app_route.dart';
 import 'package:baider_app/view/widget/home/catergorisecard.dart';
 import 'package:baider_app/view/widget/home/coustombuildHeader.dart';
@@ -49,64 +50,71 @@ class _HomepageState extends State<Homepage> {
                 return Center(child: Text('Error: ${state.message}'));
               }
               if (state is HomeLoaded) {
-                final loadedState = state as HomeLoaded;
-                // ✅ فلترة الفئات حسب الاسم
+                final loadedState = state;
+                //  فلترة الفئات حسب الاسم
                 final filteredCategories = loadedState.categories.where((
                   category,
                 ) {
                   final name = category.getLocalizedName(locale).toLowerCase();
                   return name.contains(_searchQuery.toLowerCase());
                 }).toList();
-                return CustomScrollView(
-                  slivers: [
-                    SliverToBoxAdapter(child: CoustombuildHeader()),
-                    SliverToBoxAdapter(child: CustomBuildBanner()),
-                    SliverToBoxAdapter(
-                      child: CustomBuildSearchBox(
-                        onChanged: (value) {
-                          if (value.isEmpty) {
-                            // لو فاضي، ارجع جيب كل الفئات
-                            context.read<HomeCubit>().loadCategories();
-                          } else {
-                            // لو فيه قيمة، ابحث بالباك
-                            context.read<HomeCubit>().searchCategories(value);
-                          }
-                        },
-                      ),
-                    ),
-                    SliverToBoxAdapter(child: Coustombuildsectiontitle()),
-
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 12,
-                      ),
-                      sliver: SliverGrid(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 12,
-                              mainAxisSpacing: 12,
-                              childAspectRatio: 1.0,
-                            ),
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) => CategoryCard(
-                            categoryModel:
-                                filteredCategories[index], // ← filtered
-                            locale: locale,
-                            onTap: () {
-                              context.push(
-                                '${AppRoute.plants}?category_id=${loadedState.categories[index].id}',
-                                extra: loadedState.categories[index],
-                              );
-                            },
-                          ),
-                          childCount:
-                              filteredCategories.length, // ← filtered count
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    //  نادي loadCategories لما المستخدم يسحب لتحت
+                    await context.read<HomeCubit>().loadCategories();
+                  },
+                  color: AppColors.primarycolor, // لون الـ spinner
+                  child: CustomScrollView(
+                    slivers: [
+                      SliverToBoxAdapter(child: CoustombuildHeader()),
+                      SliverToBoxAdapter(child: CustomBuildBanner()),
+                      SliverToBoxAdapter(
+                        child: CustomBuildSearchBox(
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              // لو فاضي، ارجع جيب كل الفئات
+                              context.read<HomeCubit>().loadCategories();
+                            } else {
+                              // لو فيه قيمة، ابحث بالباك
+                              context.read<HomeCubit>().searchCategories(value);
+                            }
+                          },
                         ),
                       ),
-                    ),
-                  ],
+                      SliverToBoxAdapter(child: Coustombuildsectiontitle()),
+
+                      SliverPadding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        sliver: SliverGrid(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 12,
+                                childAspectRatio: 1.0,
+                              ),
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) => CategoryCard(
+                              categoryModel:
+                                  filteredCategories[index], // ← filtered
+                              locale: locale,
+                              onTap: () {
+                                context.push(
+                                  '${AppRoute.plants}?category_id=${loadedState.categories[index].id}',
+                                  extra: loadedState.categories[index],
+                                );
+                              },
+                            ),
+                            childCount:
+                                filteredCategories.length, // ← filtered count
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 );
               }
               return const SizedBox.shrink();

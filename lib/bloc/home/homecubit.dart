@@ -4,31 +4,37 @@ import 'package:baider_app/data/model/categoresmodel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final HomeData homeData;
+  final HomeData _homeData;
 
-  HomeCubit(this.homeData) : super(HomeInitial());
+  List<CategoryModel> _allCategories = [];
+  String _searchQuery = '';
 
+  HomeCubit(this._homeData) : super(HomeInitial());
+
+  /// جلب كل الفئات
   Future<void> loadCategories() async {
     emit(HomeLoading());
     try {
-      final categories = await homeData.getCategories();
-      emit(HomeLoaded(categories));
+      _allCategories = await _homeData.getCategories();
+      _searchQuery = '';
+      _emitLoaded();
     } catch (e) {
       emit(HomeError(e.toString()));
     }
   }
 
-  // ✅ ميثود البحث
-  Future<void> searchCategories(String query) async {
-    emit(HomeLoading());
-    try {
-      var data = await homeData.searchCategories(query);
-      List<CategoryModel> categories = data
-          .map((json) => CategoryModel.fromJson(json))
-          .toList();
-      emit(HomeLoaded(categories));
-    } catch (e) {
-      emit(HomeError(e.toString()));
-    }
+  void searchCategories(String query) {
+    _searchQuery = query;
+    _emitLoaded(); 
+  }
+
+  void _emitLoaded() {
+    final filtered = _searchQuery.isEmpty
+        ? _allCategories
+        : _allCategories.where((category) {
+            final name = category.name.toLowerCase();
+            return name.contains(_searchQuery.toLowerCase());
+          }).toList();
+    emit(HomeLoaded(filtered));
   }
 }
